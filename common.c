@@ -436,12 +436,12 @@ void init_ht(struct ctrl_blk *cb)
 
 int is_roce(void)
 {
+	// bash export ROCE=1
 	char *env = getenv("ROCE");
 	if(env == NULL) {		// If ROCE environment var is not set
 		fprintf(stderr, "ROCE not set\n");
 		exit(-1);
 	}
-	fprintf(stderr, env);
 	return atoi(env);
 }
 

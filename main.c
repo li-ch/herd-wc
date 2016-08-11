@@ -545,6 +545,7 @@ int main(int argc, char *argv[])
 	CPE(!dev_list, "Failed to get IB devices list", 0);
 
 	ib_dev = dev_list[is_roce() == 1 ? 1 : 0];
+	fprintf(stderr, "is_roce()=%d", is_roce());
 	CPE(!ib_dev, "IB device not found", 0);
 
 	// Create queue pairs and modify them to INIT
