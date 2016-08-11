@@ -25,7 +25,7 @@
 
 #define PUT_PERCENT 5			// Percentage of PUT operations
 
-#define IB_PHYS_PORT 1			// Primary physical port number for qps
+#define IB_PHYS_PORT 2			// Primary physical port number for qps, WeChat uses port 2
 #define CLIENT_PRINT_LAT 0		// Should clients sample request latency?
 
 #define USE_UC 1				// Use UC for requests. If 0, RC is ued
@@ -38,8 +38,8 @@
 	#define MY_SEND_INLINE IBV_SEND_INLINE
 #endif
 
-#define NUM_CLIENTS 36			// Number of client processes
-#define NUM_SERVERS 7			// Number of server processes
+#define NUM_CLIENTS 1			// Number of client processes
+#define NUM_SERVERS 1			// Number of server processes
 
 #define Q_DEPTH 1024			// Size of all created queues
 #define S_DEPTH 512
@@ -116,7 +116,7 @@ struct UD_KV {
 #define GET_FAIL_LEN_1 20001	// Denotes GET failure in pipeline stage 1
 #define GET_FAIL_LEN_2 20002	// Denotes GET failure in pipeline stage 2
 
-// PIpeline ITem
+// PipeLine ITem
 struct PL_IT {
 	struct KV *kv;
 	int cn;				// Client who sent the KV
