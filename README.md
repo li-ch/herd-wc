@@ -92,7 +92,7 @@ License
 	See the License for the specific language governing permissions and
 	limitations under the License.
 
-<!---
+
 Algorithm details:
 ====
 
@@ -142,5 +142,5 @@ SEND completions.
 
 The client uses parameters CL_BTCH_SZ and CL_SEMI_BTCH_SZ to post
 RECV batches.
---->
+
 
