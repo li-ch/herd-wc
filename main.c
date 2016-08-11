@@ -541,11 +541,12 @@ int main(int argc, char *argv[])
 	}
 	
 	// Get an InfiniBand/RoCE device
-	dev_list = ibv_get_device_list(NULL);
+	int num_devices;
+	dev_list = ibv_get_device_list(&num_devices);
 	CPE(!dev_list, "Failed to get IB devices list", 0);
 
 	ib_dev = dev_list[is_roce() == 1 ? 1 : 0];
-	fprintf(stderr, "is_roce()=%d", is_roce());
+	fprintf(stderr, "Got %d devices, is_roce()=%d\n", num_devices, is_roce());
 	CPE(!ib_dev, "IB device not found", 0);
 
 	// Create queue pairs and modify them to INIT
