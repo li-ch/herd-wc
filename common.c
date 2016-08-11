@@ -441,6 +441,7 @@ int is_roce(void)
 		fprintf(stderr, "ROCE not set\n");
 		exit(-1);
 	}
+	fprintf(stderr, env);
 	return atoi(env);
 }
 
