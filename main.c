@@ -514,6 +514,7 @@ int main(int argc, char *argv[])
 	ctx = malloc(sizeof(struct ctrl_blk));
 	
 	ctx->id = atoi(argv[1]);
+	fprintf(stderr, "ctx->id=%d\n", ctx->id);
 
 	// Allocate space for queue-pair attributes
 	if (argc == 2) {

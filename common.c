@@ -170,7 +170,7 @@ int setup_buffers(struct ctrl_blk *cb)
 			(char *) client_req_area, WINDOW_SIZE * S_KV, FLAGS);
 			
 		cb->wr.opcode = IBV_WR_RDMA_WRITE;
-		cb->sgl.lkey = client_req_area_mr->lkey;
+		cb->sgl.lkey = client_req_area_mr->lkey; 
 		
 	} else {
 		if(REQ_AC * S_KV > M_2) {
@@ -207,7 +207,7 @@ int setup_buffers(struct ctrl_blk *cb)
 		}
 
 		cb->wr.opcode = IBV_WR_SEND;
-		cb->sgl.lkey = server_resp_area_mr->lkey;
+		cb->sgl.lkey = server_resp_area_mr->lkey; //The Local Key of the Memory Region that this memory buffer was registered with
 	}
 
 	cb->wr.sg_list = &cb->sgl;
