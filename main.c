@@ -20,8 +20,8 @@ static struct ctrl_blk *init_ctx(struct ctrl_blk *ctx,
 	return ctx;
 }
 
-// process_pipeline is called before we want to insert a new request or when we 
-// want to add a dummy request.
+// process_pipeline is called before we want to insert a new request 
+// or when we want to add a dummy request.
 void process_pipeline(struct ctrl_blk *cb)
 {
 	int pipeline_index = tot_pipelined & 1;
