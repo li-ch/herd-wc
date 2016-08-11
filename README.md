@@ -1,6 +1,7 @@
 # herd-wc
 A fork of HERD for WeChat testbed
 
+
 HERD
 ====
 
@@ -11,30 +12,32 @@ appeared in *SIGCOMM'14*.
 This version of HERD has been tested for the following configuration:
 
 1. Software
-  * OS: Ubuntu 12.04 (kernel 3.2.0)
-  * RDMA drivers: `mlx4` from MLNX OFED 2.2. I suggest using the MLNX OFED version for Ubuntu 12.04.
+* OS: Ubuntu 12.04 (kernel 3.2.0)
+* RDMA drivers: `mlx4` from MLNX OFED 2.2. I suggest using the MLNX OFED version for Ubuntu 12.04.
 2. Hardware
-  * RNICs: 
+* RNICs: 
     * ConnectX-3 353A (InfiniBand)
-	* ConnectX-3 313A (RoCE)
-	* ConnectX-3 354A (InfiniBand)
+    * ConnectX-3 313A (RoCE)
+    * ConnectX-3 354A (InfiniBand)
+
+
 
 Initial setup:
 -------------
 
 * I assume that the machines are named: `node-i.RDMA.fawn.apt.emulab.net` starting from `i = 1`.
   * The experiment requires at least `(1 + (NUM_CLIENTS / num_processes))` machines.
-	`node-1` is the server machine.
-  	`NUM_CLIENTS` is the total number of client processes, defined in `common.h`.
-	`num_processes` is the number of client processes per machine, defined in
-	`run-machine.sh`.
+    `node-1` is the server machine.
+    `NUM_CLIENTS` is the total number of client processes, defined in `common.h`.
+    `num_processes` is the number of client processes per machine, defined in
+    `run-machine.sh`.
   * To modify HERD for your machine names: 
     * Make appropriate changes in `kill-remote.sh` and `run-servers.sh`.
-	* Change the server's machine name in the `servers` file. Clients use this file to
-	  connect to server processes.
+  * Change the server's machine name in the `servers` file. Clients use this file to
+    connect to server processes.
 
   * Make sure that ports 5500 to 5515 are available on the server machine. Server process `i`
-	listens for clients on port `5500 + i`.
+    listens for clients on port `5500 + i`.
 
 * Execute the following commands at the server machine:
 ```bash
@@ -48,6 +51,8 @@ sudo hugepages-create.sh 0 4096		# Create hugepages on socket 0. Do for all sock
 
 * Mount the HERD folder on all client machines via NFS.
 
+
+
 Quick start:
 -----------
 
@@ -55,7 +60,9 @@ Quick start:
 
 * To run the clients automatically along with the server:
 
-```bash	
+  ```bash
+
+  ```
 # At node-1 (server)
 ./run-servers.sh
 ```
@@ -63,7 +70,7 @@ Quick start:
 * If you do not want to run clients automatically from the server, delete the 
 2nd loop from `run-servers.sh`. Then:
 	
-```bash	
+​```bash	
 # At node-1 (server)
 ./run-servers.sh
 # At node-2 (client 0)
@@ -73,7 +80,9 @@ Quick start:
 ```
 
 * To kill the server processes, run `local-kill.sh` at the server machine. To kill the 
-client processes remotely, run `kill-remote.sh` at the server machine.
+  client processes remotely, run `kill-remote.sh` at the server machine.
+
+
 
 License
 -------
@@ -83,9 +92,9 @@ License
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at
-
+	
 	    http://www.apache.org/licenses/LICENSE-2.0
-
+	
 	Unless required by applicable law or agreed to in writing, software
 	distributed under the License is distributed on an "AS IS" BASIS,
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -98,34 +107,41 @@ Algorithm details:
 
 SERVER's ALGORITHM (one iteration)
 
-1. Poll for a new request. The polling must be done on the last byte
-of the request area slot. We must check (char) key != 0 and not just
-key != 0. The latter can lead to a situation where the request is 
-detected before the key is written entirely by the HCA (for example,
-only the first 4 bytes have been writtesn). 
+1. Poll for a new request. If no new request is found in FAIL_LIM tries, go to 2.
 
-If no new request is found in FAIL_LIM tries, go to 2.
+   **_Caveat_**: The polling must be done on the last byte
+   of the request area slot. We must check (char) key != 0 and not just
+   key != 0. The latter can lead to a situation where the request is 
+   detected before the key is written entirely by the HCA (for example,
+   only the first 4 bytes have been written).
 
 2. Move the pipeline forward and get a pipeline item as the return
-value. The pipeline item contains the request type, the client
-number from which this request was received, and the request area
-slot (RAS) from which this request was received.
-	2.1. If the request type is a valid type (GET_TYPE or PUT_TYPE),
-	send a response to the client. Otherwise, do nothing.
+   value. 
+
+   The pipeline item contains: 
+
+   * the request type, 
+   * the client number from which this request was received, and 
+   * the request area slot (RAS) from which this request was received.
+
+   **If** the request type is a valid type (GET_TYPE or PUT_TYPE), send a response to the client. 
+
+   **Else**, do nothing.
 
 3. Add the new request to the pipeline. The item that we're adding
-is the one that was polled in step 1.
+   is the one that was polled in step 1.
 
-We zero out the polled field of the request and store it into the
-pipeline item. This is a must do. Here's what happens if we don't
-zero out the polled field. Although the client will not write
-into the same request slot till we send a response for the slot, the 
-server's round-robin polling will detect this request again.
+   We zero out the polled field of the request and store it into the
+   pipeline item. This is a must do. Here's what happens if we don't
+   zero out the polled field. Although the client will not write
+   into the same request slot till we send a response for the slot, the 
+   server's round-robin polling will detect this request again.
 
-We also zero out the len field of the request. This is useful because
-clients do not WRITE to the len field for GETs. So, when a new
-request is detected in (1), len == 0 means that the request is a
-GET, otherwise it's a PUT.
+   We also zero out the len field of the request. This is useful because
+   clients do not WRITE to the len field for GETs. <u>So, when a new</u>
+   <u>request is detected in (1), len == 0 means that the request is a</u>
+   <u>GET, otherwise it's a PUT.</u>
+
 
 OUTSTANDING REQUESTS / RESPONSES:
 ----
