@@ -1,6 +1,7 @@
 # Action: 
 #	1. Run server processes on the server machine
 #	2. ssh into client machines and run the run-machine.sh script
+export ROCE=1	
 
 ./main 0 50001 &
 ./main 1 50002 &
