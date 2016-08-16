@@ -86,7 +86,7 @@
 
 // Compare, print, and exit
 #define CPE(val, msg, err_code) \
-	if(val) { fprintf(stderr, msg); fprintf(stderr, " Error %d. \n", err_code); \
+	if(val) { fprintf(stderr, msg); fprintf(stderr, " Error %d. Reason: %s.\n", err_code, strerror(errno)); \
 	exit(err_code);}
 
 // The key-value struct
