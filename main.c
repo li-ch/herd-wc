@@ -613,7 +613,7 @@ int main(int argc, char *argv[])
 					ctx->remote_dgram_qp_attrs[i].gid_global_interface_id;
 				ah_attr.grh.dgid.global.subnet_prefix = 
 					ctx->remote_dgram_qp_attrs[i].gid_global_subnet_prefix;
-				fprintf(stderr, "DEBUG: ah_attr: %d, %d\n", ah_attr.grh.dgid.global.interface_id, ah_attr.grh.dgid.global.subnet_prefix)
+				fprintf(stderr, "DEBUG: ah attribute %d, %d\n", ah_attr.grh.dgid.global.interface_id, ah_attr.grh.dgid.global.subnet_prefix)
 				ah_attr.grh.sgid_index = 0;
 				ah_attr.grh.hop_limit = 1;
 			}
