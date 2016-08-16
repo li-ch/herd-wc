@@ -30,7 +30,7 @@
 
 #define USE_UC 1				// Use UC for requests. If 0, RC is ued
 #define USE_INLINE 1			// Use WQE inlining for requests and responses
-#define USE_HUGEPAGE 1
+#define USE_HUGEPAGE 0			// Tencent restrictions (tlinux).
 
 #if (USE_INLINE == 0)
 	#define MY_SEND_INLINE 0
@@ -68,7 +68,7 @@
 // and needs a single key. For lossy index and circular log, each server uses a separate
 // key := BASE + cb->id. Number of server processes must be less than 32.
 #define REQ_AREA_SHM_KEY 3185
-#define RESP_AREA_SHM_KEY 3186
+#define RESP_AREA_SHM_KEY 13186
 #define BASE_HT_INDEX_SHM_KEY 1
 #define BASE_HT_LOG_SHM_KEY 32
 
@@ -86,7 +86,7 @@
 
 // Compare, print, and exit
 #define CPE(val, msg, err_code) \
-	if(val) { fprintf(stderr, msg); fprintf(stderr, " Error %d \n", err_code); \
+	if(val) { fprintf(stderr, msg); fprintf(stderr, " Error %d. \n", err_code); \
 	exit(err_code);}
 
 // The key-value struct

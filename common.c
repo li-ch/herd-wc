@@ -180,8 +180,8 @@ int setup_buffers(struct ctrl_blk *cb)
 
 		if(cb->id == 0) {
 			// Create and register master server's request region
-			int sid = shmget(REQ_AREA_SHM_KEY, M_2, IPC_CREAT | 0666 | SHM_HUGETLB);
-			CPE(sid < 0, "Master server request area shmget() failed\n", sid);
+			int sid = shmget(REQ_AREA_SHM_KEY, M_2, IPC_CREAT | 0666);
+			CPE(sid < 0, "Master server request area shmget() failed. %s\n", sid);
 
 			server_req_area = shmat(sid, 0, 0);
 			memset((char *) server_req_area, 0, M_2);
@@ -189,7 +189,7 @@ int setup_buffers(struct ctrl_blk *cb)
 			CPE(!server_req_area_mr, "Failed to register server's request area", errno);
 
 			// Create and register master server's response region
-			sid = shmget(RESP_AREA_SHM_KEY, M_2, IPC_CREAT | 0666 | SHM_HUGETLB);
+			sid = shmget(RESP_AREA_SHM_KEY, M_2, IPC_CREAT | 0666);
 			CPE(sid < 0, "Master server response area shmget() failed\n", sid);
 			server_resp_area = shmat(sid, 0, 0);
 			memset((char *) server_resp_area, 0, M_2);
@@ -197,11 +197,11 @@ int setup_buffers(struct ctrl_blk *cb)
 			CPE(!server_resp_area_mr, "Failed to register server's response area", errno);
 		} else {
 			// For a slave server, map and register the regions created by the master
-			int sid = shmget(REQ_AREA_SHM_KEY, REQ_AC * S_KV, SHM_HUGETLB | 0666);
+			int sid = shmget(REQ_AREA_SHM_KEY, REQ_AC * S_KV, 0666);
 			server_req_area = shmat(sid, 0, 0);
 			server_req_area_mr = ibv_reg_mr(cb->pd, (char *) server_req_area, M_2, FLAGS);
 
-			sid = shmget(RESP_AREA_SHM_KEY, REQ_AC * S_KV, SHM_HUGETLB | 0666);
+			sid = shmget(RESP_AREA_SHM_KEY, REQ_AC * S_KV, 0666);
 			server_resp_area = shmat(sid, 0, 0);
 			server_resp_area_mr = ibv_reg_mr(cb->pd, (char *) server_resp_area, M_2, FLAGS);
 		}
