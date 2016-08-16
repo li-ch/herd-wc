@@ -499,9 +499,9 @@ void run_client(struct ctrl_blk *cb)
 	return;
 }
 
-/* Usage:
- * Server: sudo ./main <id> <sock_port>
- * Client: sudo ./maun <id> <sock_port> <server_ip>
+/* Usage as root:
+ * Server: ./main <id> <sock_port>
+ * Client: ./main <id> <sock_port> <server_ip>
  */ 
 int main(int argc, char *argv[])
 {
@@ -515,6 +515,7 @@ int main(int argc, char *argv[])
 	
 	ctx->id = atoi(argv[1]);
 	fprintf(stderr, "ctx->id=%d\n", ctx->id);
+	fprintf(stderr, "argc=%d\n", argc);
 
 	// Allocate space for queue-pair attributes
 	if (argc == 2) {
