@@ -518,7 +518,7 @@ int main(int argc, char *argv[])
 	fprintf(stderr, "argc=%d\n", argc);
 
 	// Allocate space for queue-pair attributes
-	if (argc == 2) {
+	if (argc == 4) {
 		ctx->is_client = 1;
 		ctx->num_conn_qps = NUM_SERVERS;
 		ctx->num_remote_dgram_qps = NUM_SERVERS;
