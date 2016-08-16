@@ -500,8 +500,8 @@ void run_client(struct ctrl_blk *cb)
 }
 
 /* Usage:
- * Server: sudo ./main <sock_port> <id>
- * Client: sudo ./maun <sock_port> <id> <server_ip>
+ * Server: sudo ./main <id> <sock_port>
+ * Client: sudo ./maun <id> <sock_port> <server_ip>
  */ 
 int main(int argc, char *argv[])
 {

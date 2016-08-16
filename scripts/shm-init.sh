@@ -1,3 +1,5 @@
+# no need to do this!
+
 # Increase the shmmax and shmall parameters so that a process can 
 # map more memory via shmget (default is 32 MB)
 
