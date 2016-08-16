@@ -181,7 +181,7 @@ int setup_buffers(struct ctrl_blk *cb)
 		if(cb->id == 0) {
 			// Create and register master server's request region
 			int sid = shmget(REQ_AREA_SHM_KEY, M_2, IPC_CREAT | 0666);
-			CPE(sid < 0, "Master server request area shmget() failed. %s\n", sid);
+			CPE(sid < 0, "Master server request area shmget() failed.\n", sid);
 
 			server_req_area = shmat(sid, 0, 0);
 			memset((char *) server_req_area, 0, M_2);
