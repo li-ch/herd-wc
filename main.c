@@ -602,7 +602,7 @@ int main(int argc, char *argv[])
 			print_qp_attr(ctx->remote_dgram_qp_attrs[i]);
 			struct ibv_ah_attr ah_attr = {
 				.is_global		= (is_roce() == 1) ? 1 : 0,
-				.dlid			= (is_roce() == 1) ? 0 : ctx->remote_dgram_qp_attrs[i].lid,
+				.dlid			= (is_roce() == 1) ? ctx->remote_dgram_qp_attrs[i].lid : 0,
 				.sl				= 0,
 				.src_path_bits	= 0,
 				.port_num		= IB_PHYS_PORT
@@ -613,7 +613,9 @@ int main(int argc, char *argv[])
 					ctx->remote_dgram_qp_attrs[i].gid_global_interface_id;
 				ah_attr.grh.dgid.global.subnet_prefix = 
 					ctx->remote_dgram_qp_attrs[i].gid_global_subnet_prefix;
-				fprintf(stderr, "DEBUG: ah attribute %lld, %lld\n", (long long)ah_attr.grh.dgid.global.interface_id, (long long)ah_attr.grh.dgid.global.subnet_prefix);
+				fprintf(stderr, "DEBUG: ah attribute remote_gid=%lld, subnet_prefix=%lld\n", 
+					(long long)ah_attr.grh.dgid.global.interface_id, 
+					(long long)ah_attr.grh.dgid.global.subnet_prefix);
 				ah_attr.grh.sgid_index = 0;
 				ah_attr.grh.hop_limit = 1;
 			}
