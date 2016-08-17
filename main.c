@@ -501,7 +501,7 @@ void run_client(struct ctrl_blk *cb)
 
 /* Usage as root:
  * Server: ./main <id> <sock_port>
- * Client: ./main <id> <sock_port> <server_ip>
+ * Client: ./main <id> < servers
  */ 
 int main(int argc, char *argv[])
 {
@@ -602,7 +602,7 @@ int main(int argc, char *argv[])
 			print_qp_attr(ctx->remote_dgram_qp_attrs[i]);
 			struct ibv_ah_attr ah_attr = {
 				.is_global		= (is_roce() == 1) ? 1 : 0,
-				.dlid			= (is_roce() == 1) ? ctx->remote_dgram_qp_attrs[i].lid : 0,
+				.dlid			= (is_roce() == 1) ? 0 : ctx->remote_dgram_qp_attrs[i].lid,
 				.sl				= 0,
 				.src_path_bits	= 0,
 				.port_num		= IB_PHYS_PORT
