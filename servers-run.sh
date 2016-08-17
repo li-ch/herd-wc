@@ -3,8 +3,8 @@
 #	2. ssh into client machines and run the run-machine.sh script
 export ROCE=1	
 
-./main 0 50001 &
-./main 1 50002 &
+./herd 0 50001 &
+./herd 1 50002 &
 
 # shm-rm.sh				# Remove hugepages
 # export ROCE=0			# Don't use RoCE on Apt

@@ -2,7 +2,7 @@ CFLAGS  := -O3 -Wall -Werror -Wno-unused-result -g
 LD      := gcc
 LDFLAGS := ${LDFLAGS} -lrdmacm -libverbs -lrt -lpthread
 
-main: common.o conn.o main.o
+herd: common.o conn.o main.o
 	${LD} -o $@ $^ ${LDFLAGS}
 
 PHONY: clean
