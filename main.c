@@ -608,7 +608,7 @@ int main(int argc, char *argv[])
 				.port_num		= IB_PHYS_PORT
 			};
 
-			if(is_roce()) {
+			if(false) { // is_roce()
 				ah_attr.grh.dgid.global.interface_id = 
 					ctx->remote_dgram_qp_attrs[i].gid_global_interface_id;
 				ah_attr.grh.dgid.global.subnet_prefix = 
