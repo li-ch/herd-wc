@@ -3,7 +3,8 @@
 
 export ROCE=1
 
-./main 2 < servers
+./main 2 < servers &
+./main 3 < servers &
 
 # num_processes=3			# Number of processes per client machine
 # export ROCE=1
