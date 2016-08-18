@@ -500,8 +500,8 @@ void run_client(struct ctrl_blk *cb)
 }
 
 /* Usage as root:
- * Server: ./main <id> <sock_port>
- * Client: ./main <id> < servers
+ * Server: ./herd <id> <sock_port>
+ * Client: ./herd <id> < servers
  */ 
 int main(int argc, char *argv[])
 {
@@ -608,12 +608,12 @@ int main(int argc, char *argv[])
 				.port_num		= IB_PHYS_PORT
 			};
 
-			if(0) { // is_roce()
+			if(is_roce()) {
 				ah_attr.grh.dgid.global.interface_id = 
 					ctx->remote_dgram_qp_attrs[i].gid_global_interface_id;
 				ah_attr.grh.dgid.global.subnet_prefix = 
 					ctx->remote_dgram_qp_attrs[i].gid_global_subnet_prefix;
-				fprintf(stderr, "DEBUG: ah attribute remote_gid=%lld, subnet_prefix=%lld\n", 
+				fprintf(stderr, "DEBUG: ah attr remote_gid=%lld, subnet_prefix=%lld\n", 
 					(long long)ah_attr.grh.dgid.global.interface_id, 
 					(long long)ah_attr.grh.dgid.global.subnet_prefix);
 				ah_attr.grh.sgid_index = 0;
